@@ -50,7 +50,9 @@ logger.error('its a error log')
 
 reqLogger.info('req logger')
 
-
-
-
 // 可用elastic做日志可视化
+
+module.exports = {
+  logger: logger,
+  reqLogger: reqLogger,
+}
