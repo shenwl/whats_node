@@ -1,10 +1,11 @@
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const cookieSession = require('cookie-session')
 const logger = require('morgan')
 
-const indexRouter = require('./routes/index')
-const usersRouter = require('./routes/users')
+const indexRouter = require('./routes/api/index')
+const usersRouter = require('./routes/api/users')
 
 const errorHandler = require('./middlewares/error_handler')
 
@@ -17,11 +18,17 @@ app.set('view engine', 'ejs')
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
 app.use(cookieParser())
+app.use(cookieSession({
+  name: 'whats_node_session',
+  keys: ['dsafhajsfj'],
+  maxAge: 24 * 60 * 60 * 1000, 
+}))
+
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/api', indexRouter)
 
 app.use(errorHandler())
 
@@ -44,8 +51,6 @@ process.on('unhandledRejection', (reason, p) => {
   console.log(p)
   console.log(reason)
 })
-
-throw new Error('catch me ...')
 
 
 module.exports = app
