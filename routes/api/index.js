@@ -9,6 +9,7 @@ const users = []
 router.get('/login', (req, res, next) => {
   const { username } = req.query
   req.session.user = { username }
+  console.log(req.session)
   res.send('done')
 })
 

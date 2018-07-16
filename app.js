@@ -1,7 +1,8 @@
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
-const cookieSession = require('cookie-session')
+// const cookieSession = require('cookie-session')
+const session = require('express-session')
 const logger = require('morgan')
 
 const indexRouter = require('./routes/api/index')
@@ -20,10 +21,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
-app.use(cookieSession({
-  name: 'whats_node_session',
-  keys: ['dsafhajsfj'],
-  maxAge: 24 * 60 * 60 * 1000, 
+// app.use(cookieSession({
+//   name: 'whats_node_session',
+//   keys: ['dsafhajsfj'],
+//   maxAge: 24 * 60 * 60 * 1000, 
+// }))
+app.use(session({
+  secret: 'whats_node_session_secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }, 
 }))
 
 app.use(express.static(path.join(__dirname, 'public')))
